@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Labeling Tool</title>
+</head>
+<body>
+    <h1>Data Labeling Tool</h1>
+    <form id="labelForm">
+        <label for="textInput">Input Text:</label><br>
+        <textarea id="textInput" name="textInput" rows="4" cols="50"></textarea><br>
+        <button type="submit">Label Text</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('labelForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const textInput = document.getElementById('textInput').value;
+            const response = await fetch('/label', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ data: textInput })
+            });
+            const result = await response.json();
+            document.getElementById('result').innerText = JSON.stringify(result, null, 2);
+        });
+    </script>
+</body>
+</html>
