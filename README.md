@@ -1,5 +1,44 @@
 ## FPPSOMLOPS
 
-**Automated Data Labeling Tool**
+**Automated Data Labeling Tool
 
-This tool uses the tensorflow framework for automated data labeling, focusing on sentiment analysis.
+This project is an automated data labeling tool using PyABSA framework to assist in labeling sentiment or aspect on text data automatically.
+
+## Features
+
+- Automatic labeling using PyABSA
+- User-friendly web interface
+- Batch processing
+- Integration with CI/CD pipelines
+
+## Setup
+
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/yourusername/automated-data-labeling-tool.git
+    ```
+
+2. Navigate to the project directory:
+    ```bash
+    cd automated-data-labeling-tool
+    ```
+
+3. Install the dependencies:
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+4. Run the application:
+    ```bash
+    python run.py
+    ```
+
+## Usage
+
+Open a web browser and go to `http://localhost:5000`. Enter the text you want to label and click "Label Text".
+
+## Testing
+
+Run the tests using pytest:
+```bash
+pytest tests/
