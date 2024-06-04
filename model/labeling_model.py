@@ -5,13 +5,13 @@ from pyabsa import ATEPCConfigManager
 config = ATEPCConfigManager.get_atepc_config_english()
 dataset = ABSADatasetList.SemEval
 
-checkpoint_map = available_checkpoints(
-    TaskCodeOption.Aspect_Polarity_Classification, show_ckpts=True
-)
+# checkpoint_map = available_checkpoints(
+#     TaskCodeOption.Aspect_Polarity_Classification, show_ckpts=True
+# )
 
 aspect_extractor = ATEPC.ATEPCTrainer(
     config=config,
-    from_checkpoint=checkpoint_map,   # not necessary for most situations
+    from_checkpoint=checkpints.json   #checkpoint_map,   # not necessary for most situations
     dataset=dataset,
     checkpoint_save_mode=1,
     auto_device=True,
