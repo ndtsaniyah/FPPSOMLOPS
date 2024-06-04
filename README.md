@@ -1,6 +1,6 @@
 ## FPPSOMLOPS
 
-**Automated Data Labeling Tool
+**Automated Data Labeling Tool**
 
 This project is an automated data labeling tool using PyABSA framework to assist in labeling sentiment or aspect on text data automatically.
 
