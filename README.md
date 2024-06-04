@@ -20,7 +20,7 @@ This project is an automated data labeling tool using PyABSA framework to assist
 
 2. Navigate to the project directory:
     ```bash
-    cd automated-data-labeling-tool
+    cd FPPSOMLOPS
     ```
 
 3. Install the dependencies:
