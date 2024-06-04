@@ -15,7 +15,7 @@ This project is an automated data labeling tool using PyABSA framework to assist
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/automated-data-labeling-tool.git
+    git clone https://github.com/ndtsaniyah/FPPSOMLOPS.git
     ```
 
 2. Navigate to the project directory:
