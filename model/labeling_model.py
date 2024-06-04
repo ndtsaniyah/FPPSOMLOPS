@@ -20,5 +20,10 @@ aspect_extractor = ATEPC.ATEPCTrainer(
 
 def label_text(text):
     # Implementasi pelabelan dengan model yang sudah dilatih
-    result = aspect_extractor.infer(text)
+    result = aspect_extractor.batch_predict(
+        target_file=atepc_examples,  #
+        save_result=True,
+        print_result=True,  # print the result
+        pred_sentiment=True,  # Predict the sentiment of extracted aspect terms
+)
     return result
