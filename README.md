@@ -8,12 +8,12 @@ This tool uses the tensorflow framework for automated data labeling, focusing on
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/rsujiwana/FP-Mlops.git
+    git clone https://github.com/ndtsaniyah/FPPSOMLOPS.git
     ```
 
 2. Navigate to the project directory:
     ```bash
-    cd FP-Mlops
+    cd FPPSOMLOPS
     ```
 
 3. Install the dependencies:
