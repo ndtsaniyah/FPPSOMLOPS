@@ -1,33 +1,26 @@
-## FPPSOMLOPS
+## FP-Mlops
 
 **Automated Data Labeling Tool**
 
-This project is an automated data labeling tool using PyABSA framework to assist in labeling sentiment or aspect on text data automatically.
-
-## Features
-
-- Automatic labeling using PyABSA
-- User-friendly web interface
-- Batch processing
-- Integration with CI/CD pipelines
+This tool uses the tensorflow framework for automated data labeling, focusing on sentiment analysis.
 
 ## Setup
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/ndtsaniyah/FPPSOMLOPS.git
+    git clone https://github.com/rsujiwana/FP-Mlops.git
     ```
 
 2. Navigate to the project directory:
     ```bash
-    cd FPPSOMLOPS
+    cd FP-Mlops
     ```
 
 3. Install the dependencies:
     ```bash
     pip install -r requirements.txt
     ```
-
+    
 4. Run the application:
     ```bash
     python run.py
