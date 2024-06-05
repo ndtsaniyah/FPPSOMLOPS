@@ -16,11 +16,14 @@ aspect_extractor.predict(['I love this movie, it is so great!'],
                          )
 
 inference_source = ATEPC.ATEPCDatasetList.Restaurant16
-atepc_result = aspect_extractor.batch_predict(target_file=inference_source,  #
-                                              save_result=True,
-                                              print_result=True,  # print the result
-                                              pred_sentiment=True,  # Predict the sentiment of extracted aspect terms
-                                              )
 
-print(atepc_result)
+def label_text(text):
+    # Implementasi pelabelan dengan model yang sudah dilatih
+    result = aspect_extractor.batch_predict(
+        target_file=inference_source,  #
+        save_result=True,
+        print_result=True,  # print the result
+        pred_sentiment=True,  # Predict the sentiment of extracted aspect terms
+    )
+    return result
 
