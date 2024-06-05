@@ -8,22 +8,12 @@ aspect_extractor = ATEPC.AspectExtractor('multilingual',
                                          cal_perplexity=True,
                                          )
 
-# instance inference
-aspect_extractor.predict(['I love this movie, it is so great!'],
+def label_text(text):
+    # Implementasi pelabelan dengan model yang sudah dilatih
+    result = aspect_extractor.predict([text],
                          save_result=True,
                          print_result=True,  # print the result
                          ignore_error=True,  # ignore the error when the model cannot predict the input
                          )
-
-inference_source = ATEPC.ATEPCDatasetList.Restaurant16
-
-def label_text(text):
-    # Implementasi pelabelan dengan model yang sudah dilatih
-    result = aspect_extractor.batch_predict(
-        target_file=inference_source,  #
-        save_result=True,
-        print_result=True,  # print the result
-        pred_sentiment=True,  # Predict the sentiment of extracted aspect terms
-    )
     return result
 
