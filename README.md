@@ -34,4 +34,4 @@ Open a web browser and go to `http://localhost:5000`. Enter the text you want to
 
 Run the tests using pytest:
 ```bash
-pytest tests/
+pytest test/
