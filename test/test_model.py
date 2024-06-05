@@ -1,7 +1,14 @@
 import pytest
-from app.utils import labeling_function
+from app import create_app
 
-def test_labeling_function():
-    input_data = "This is a sample input text."
-    expected_output = {"label": "Expected label"}  # Sesuaikan dengan output yang diharapkan
-    assert labeling_function(input_data) == expected_output
+@pytest.fixture
+def client():
+    app = create_app()
+    app.config['TESTING'] = True
+    with app.test_client() as client:
+        yield client
+
+def test_label_data_route(client):
+    response = client.post('/label', json={'data': 'This is a test sentence.'})
+    assert response.status_code == 200
+    assert 'label' in response.json

@@ -16,3 +16,4 @@ def label_text(text):
                          ignore_error=True,  # ignore the error when the model cannot predict the input
                          )
     return result
+
