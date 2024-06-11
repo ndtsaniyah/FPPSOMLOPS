@@ -1,0 +1,131 @@
+name: Build Docker
+
+on:
+    pull_request:
+        types: [opened, reopened]
+        branches:
+        - main
+        - develop
+        - 'feature/**'
+    push:
+        branches:
+        - main
+        - develop
+        - 'feature/**'
+        paths:
+        - '**.py'
+        - 'Dockerfile'
+        - 'entrypoint.sh'
+
+concurrency:
+    group: ${{ github.workflow}}-${{ github.ref }}
+    cancel-in-progress: true
+
+permissions:
+    contents: read
+
+jobs:
+    hadolint:
+      if: github.event_name	== 'pull_request'
+      permissions:
+          contents: write
+          issues: write
+          pull-requests: write
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+        - name: Run Docker linting using Hadolint
+          id: hadolint
+          uses: hadolint/hadolint-action@v3.1.0
+          with: 
+            failure-threshold: warning
+            ignore: 'DL3018,DL3006,DL3008'
+        - name: Update Pull Request
+          uses: actions/github-script@v6
+          if: github.event_name == 'pull_request'
+          with:
+              script: |
+                  const output = `
+                  #### Hadolint: \`${{ steps.hadolint.outcome }}\`
+                  \`\`\`
+                  ${process.env.HADOLINT_RESULTS}
+                  \`\`\`
+                  `;
+          
+                  github.rest.issues.createComment({
+                  issue_number: context.issue.number,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  body: output
+                  })
+
+    dockle:
+      needs: [hadolint]
+      if: github.event_name	== 'pull_request'
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+        - name: convert repo name to lowercase
+          run: |
+            echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
+        - name: Set up Docker Buildx
+          uses: docker/setup-buildx-action@v3
+        - name: Build image from Dockerfile
+          env:
+            TAG: ${{ env.REPO }}:v0.1
+            DOCKER_CONTENT_TRUST: 1
+          run: |
+             docker build -t $TAG .          
+        - name: Run dockle
+          uses: goodwithtech/dockle-action@v0.1.2
+          env:
+            DOCKER_CONTENT_TRUS: 1
+          with:
+            image: ${{ env.REPO }}:v0.1
+            format: 'list'
+            exit-code: '1'
+            exit-level: 'warn'
+            ignore: 'CIS-DI-0006,CIS-DI-0010'
+            accept-key: 'GNUPGHOME,PYTHON_GET_PIP_URL,LANG,PYTHONDONTWRITEBYTECODE,PATH,PYTHON_PIP_VERSION,FLASK_APP,PYTHON_SETUPTOOLS_VERSION,PYTHON_GET_PIP_SHA256,LANG,PYTHON_VERSION,--strip-components,gnuArch'
+
+    build:
+      needs: [dockle]
+      if: github.event_name	== 'pull_request'
+      runs-on: ubuntu-latest
+      steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: convert repo name to lowercase
+        run: |
+          echo "REPO=$(echo ${GITHUB_REPOSITORY,,} | cut -d'/' -f2)" >> ${GITHUB_ENV}
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.REPO }}:v0.1
+      - name: run docker
+        run: docker run -d -p 5000:5000  ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.REPO }}:v0.1
+      - name: test curl
+        run: |
+          if ! http_status=$(curl -s -XPOST -H 'Content-Type: application/json' -d '{"data":"This is a sample input text"}' http://localhost:5000/label); then
+            echo "Warning: curl failed with $http_status!"
+            exit 1
+          else
+            if http_status=$(curl -s -XPOST -H 'Content-Type: application/json' -d '{"data":"This is a sample input text"}' http://localhost:5000/label)  && [[ $http_status != "200" ]]; then
+              echo "Warning: curl failed with $http_status!"
+              exit 1
+            fi
+          fi
+
+       
