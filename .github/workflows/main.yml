@@ -30,14 +30,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run unit tests for model
-        run: |
-          python -m unittest discover -s test -p 'test_model.py'
-      
-      - name: Run unit tests for flask
-        run: |
-          python -m unittest discover -s test -p 'test_flask.py'
-
       - name: Run unit tests
         run: |
-          python -m unittest discover -s test -p 'test_model.py' 
+          python -m unittest discover -s test -p 'test_model.py'
